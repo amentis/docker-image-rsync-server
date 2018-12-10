@@ -5,14 +5,15 @@ if [ ! -z "${WAIT_INT}" ]; then
   /usr/bin/pipework --wait -i ${WAIT_INT}
 fi
 
-USERNAME=${USERNAME:-rsync}
-PASSWORD=${PASSWORD:-rsync}
-ALLOW=${ALLOW:-192.168.0.0/16 172.16.0.0/12 127.0.0.1/32}
+USERNAME=${USERNAME:-user}
+PASSWORD=${PASSWORD:-pass}
+ALLOW=${ALLOW:-*}
 VOLUME=${VOLUME:-/data}
 
 if [ "$1" = 'rsync_server' ]; then
 
-    if [ -e "/root/.ssh/authorized_keys" ]; then
+    if [ -e "/ssh/authorized_keys" ]; then
+        cp /ssh/authorized_keys /root/.ssh/authorized_keys
         chmod 400 /root/.ssh/authorized_keys
         chown root:root /root/.ssh/authorized_keys
     fi

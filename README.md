@@ -1,5 +1,7 @@
 ## rsync-server
 
+A fork of apnar/docker-images-rsync-server I did because I had a problem with mounting a kubernetes secret as a volume while doing chmod
+
 A `rsyncd`/`sshd` server in Docker. You know, for moving files.  Based on container by the same name by axiom.  Changes include switching to ubuntu:bionic for base, setting up as auto build, few tweaks on paths and names, addition of pipework for odd network needs.
 
 
@@ -14,8 +16,8 @@ $ docker run \
     -p 9000:22 \ # sshd port
     -e USERNAME=user \ # rsync username
     -e PASSWORD=pass \ # rsync/ssh password
-    -v /your/public.key:/root/.ssh/authorized_keys \ # your public key
-    apnar/rsync-server
+    -v /your/public.key:/ssh/authorized_keys \ # your public key
+    amentis/rsync-server
 ```
 
 #### `rsyncd`
@@ -60,21 +62,21 @@ Variable options (on run)
 * `USERNAME` - the `rsync` username. defaults to `user`
 * `PASSWORD` - the `rsync` password. defaults to `pass`
 * `VOLUME`   - the path for `rsync`. defaults to `/data`
-* `ALLOW`    - space separated list of allowed sources. defaults to `192.168.0.0/16 172.16.0.0/12`.
+* `ALLOW`    - space separated list of allowed sources. example:  `192.168.0.0/16 172.16.0.0/12` default: `*`.
 * `WAIT_INT` - wait for this interface to appear before starting services, for use with pipeworks.
 
 
 ##### Simple server on port 873
 
 ```
-$ docker run -p 873:873 apnar/rsync-server
+$ docker run -p 873:873 amentis/rsync-server
 ```
 
 
 ##### Use a volume for the default `/data`
 
 ```
-$ docker run -p 873:873 -v /your/folder:/data apnar/rsync-server
+$ docker run -p 873:873 -v /your/folder:/data amentis/rsync-server
 ```
 
 ##### Set a username and password
@@ -85,7 +87,7 @@ $ docker run \
     -v /your/folder:/data \
     -e USERNAME=admin \
     -e PASSWORD=mysecret \
-    apnar/rsync-server
+    amentis/rsync-server
 ```
 
 ##### Run on a custom port
@@ -96,7 +98,7 @@ $ docker run \
     -v /your/folder:/data \
     -e USERNAME=admin \
     -e PASSWORD=mysecret \
-    apnar/rsync-server
+    amentis/rsync-server
 ```
 
 ```
@@ -132,7 +134,7 @@ $ docker run \
     -e PASSWORD=mysecret \
     -e VOLUME=/myvolume \
     -e ALLOW=192.168.8.0/24 192.168.24.0/24 172.16.0.0/12 127.0.0.1/32 \
-    apnar/rsync-server
+    amentis/rsync-server
 ```
 
 
@@ -153,7 +155,7 @@ docker run \
     -e ALLOW=192.168.8.0/24 192.168.24.0/24 172.16.0.0/12 127.0.0.1/32 \
     -v /my/authorized_keys:/root/.ssh/authorized_keys \
     -p 9000:22 \
-    apnar/rsync-server
+    amentis/rsync-server
 ```
 
 ```
