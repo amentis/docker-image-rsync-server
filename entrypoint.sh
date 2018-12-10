@@ -13,6 +13,7 @@ VOLUME=${VOLUME:-/data}
 if [ "$1" = 'rsync_server' ]; then
 
     if [ -e "/ssh/authorized_keys" ]; then
+        mkdir -p /root/.ssh
         cp /ssh/authorized_keys /root/.ssh/authorized_keys
         chmod 400 /root/.ssh/authorized_keys
         chown root:root /root/.ssh/authorized_keys
